@@ -1,20 +1,18 @@
 package com.codigoprogramacion.clienterss;
 
 import android.app.Activity;
-import android.app.ActionBar;
 import android.app.Fragment;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.os.Build;
-import android.util.Log;
 
 
-import com.codigoprogramacion.clienterss.helpers.Download;
+import com.codigoprogramacion.clienterss.helpers.DownloadRSS;
 
 public class MainActivity extends Activity {
 
@@ -22,7 +20,6 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        new RSSDownload().execute();
 
         if (savedInstanceState == null) {
             getFragmentManager().beginTransaction()
@@ -30,19 +27,15 @@ public class MainActivity extends Activity {
                     .commit();
         }
 
-        new RSSDownload().execute();
+        Log.d("CLIENTE RSS", "INICIANDO APP");
+        DownloadRSSTask d = new DownloadRSSTask();
+        d.execute();
+
+        //Ejecución de codigo
+
+
     }
 
-    private class RSSDownload extends AsyncTask<String ,String,String>
-    {
-        @Override
-        protected String doInBackground(String... params)
-        {
-            String rss = Download.getRSSfromURL("http://codigoprogramacion.com/rss");
-            Log.d("CLIENTE RSS",rss);
-            return rss;
-        }
-    }
 
 
     @Override
@@ -78,6 +71,16 @@ public class MainActivity extends Activity {
                 Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_main, container, false);
             return rootView;
+        }
+    }
+
+    private class DownloadRSSTask extends AsyncTask<Void,Void,Void>
+    {
+        @Override
+        protected Void doInBackground(Void... voids) {
+            String x = DownloadRSS.getRSSfromURL("http://codigoprogramacion.com/feed");
+            Log.d("CLIENTE RSS - RESULT",x);
+            return null;
         }
     }
 
