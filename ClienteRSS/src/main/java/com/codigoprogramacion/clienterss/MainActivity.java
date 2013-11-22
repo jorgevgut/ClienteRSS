@@ -16,6 +16,7 @@ import android.widget.Button;
 
 
 import com.codigoprogramacion.clienterss.helpers.DownloadRSS;
+import com.codigoprogramacion.clienterss.helpers.RSSFeedParser;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -142,7 +143,12 @@ public class MainActivity extends Activity  {
                     in.close();
                     Log.d("CLIENTE RSS",total);
 
-                    mywebview.loadData(total, "text/x=html", "UTF-8");
+                    mywebview.loadData(total, "text/html", "UTF-8");
+                    RSSFeedParser p = new RSSFeedParser("/storage/sdcard0/rss.xml");
+                    p.readFeed();
+
+
+
 
                 }catch(Exception e){
 
