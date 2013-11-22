@@ -10,16 +10,33 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
+import android.widget.Button;
+
 
 
 import com.codigoprogramacion.clienterss.helpers.DownloadRSS;
 
-public class MainActivity extends Activity {
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
+public class MainActivity extends Activity  {
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
 
         if (savedInstanceState == null) {
             getFragmentManager().beginTransaction()
@@ -27,9 +44,9 @@ public class MainActivity extends Activity {
                     .commit();
         }
 
-        Log.d("CLIENTE RSS", "INICIANDO APP");
-        DownloadRSSTask d = new DownloadRSSTask();
-        d.execute();
+
+
+
 
         //Ejecución de codigo
 
@@ -58,11 +75,14 @@ public class MainActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
+
+
     /**
      * A placeholder fragment containing a simple view.
      */
-    public static class PlaceholderFragment extends Fragment {
+    public static class PlaceholderFragment extends Fragment implements View.OnClickListener{
 
+        WebView mywebview;
         public PlaceholderFragment() {
         }
 
@@ -70,18 +90,69 @@ public class MainActivity extends Activity {
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+
+            mywebview = (WebView)rootView.findViewById(R.id.myWebview);
+            Log.d("CLIENTE RSS", "INICIANDO APP");
+
+            Button btn = (Button)rootView.findViewById(R.id.initBtn);
+
+            btn.setOnClickListener(this);
+
             return rootView;
+        }
+
+        @Override
+        public void onClick(View view) {
+            DownloadRSSTask d = new DownloadRSSTask();
+            d.execute();
+        }
+
+
+        private class DownloadRSSTask extends AsyncTask<Void,Void,Void>
+        {
+            @Override
+            protected Void doInBackground(Void... voids) {
+                Log.d("CLIENTE RSS","test");
+                //DownloadRSS.getRSSfromURL("http://codigoprogramacion.com/feed");
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void result) {
+
+                InputStream entrada;
+                File xml;
+                FileInputStream fileIn;
+                final int bufferSize = 1024;
+                try{
+
+                    xml = new File("/storage/sdcard0/rss.xml");
+                    fileIn = new FileInputStream(xml);
+
+                    InputStreamReader in = new InputStreamReader(fileIn);
+                    BufferedReader br = new BufferedReader(in);
+                    String txt,total="";
+                    while((txt = br.readLine())!=null)
+                    {
+                        total+=txt;
+                        Log.d("CLIENTE RSS",txt);
+
+                    }
+                    br.close();
+                    in.close();
+                    Log.d("CLIENTE RSS",total);
+
+                    mywebview.loadData(total, "text/x=html", "UTF-8");
+
+                }catch(Exception e){
+
+                    e.printStackTrace();
+
+                }
+            }
         }
     }
 
-    private class DownloadRSSTask extends AsyncTask<Void,Void,Void>
-    {
-        @Override
-        protected Void doInBackground(Void... voids) {
-            String x = DownloadRSS.getRSSfromURL("http://codigoprogramacion.com/feed");
-            Log.d("CLIENTE RSS - RESULT",x);
-            return null;
-        }
-    }
+
 
 }

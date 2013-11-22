@@ -9,8 +9,27 @@
     tools:context=".MainActivity$PlaceholderFragment">
 
     <TextView
-        android:text="@string/hello_world"
+        android:id="@+id/title"
+        android:text="@string/app_name"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        />
+
+    <Button
+        android:id="@+id/initBtn"
+        android:text="clickeame"
+        android:layout_toEndOf="@+id/title"
+        android:layout_marginTop="-10dp"
+        android:layout_height="40dp"
+        android:layout_width="wrap_content" />
+
+    <WebView
+        android:id="@+id/myWebview"
+        android:layout_below="@+id/title"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent">
+
+        </WebView>
 
 </RelativeLayout>

@@ -1,6 +1,8 @@
 package com.codigoprogramacion.clienterss.helpers;
 
 
+import android.util.Log;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
@@ -43,10 +45,10 @@ public class DownloadRSS {
              entrada.close();
              fileOut.close();
              conexion.disconnect();
-
+             Log.d("CLIENTE RSS","descargado");
 
          }catch(Exception e){
-
+             e.printStackTrace();
          }
 
          return null;
