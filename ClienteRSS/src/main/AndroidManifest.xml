@@ -29,6 +29,12 @@
             </intent-filter>
         </activity>
 
+        <activity android:name="com.codigoprogramacion.clienterss.ArticlePagerActivity"
+            android:label="Cliente RSS"
+            >
+
+        </activity>
+
     </application>
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
