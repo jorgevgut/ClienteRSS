@@ -1,7 +1,10 @@
 package com.codigoprogramacion.clienterss;
 
 import android.app.Activity;
+import android.content.Intent;
+
 import android.app.Fragment;
+
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,6 +20,7 @@ import android.widget.Button;
 
 import com.codigoprogramacion.clienterss.helpers.DownloadRSS;
 import com.codigoprogramacion.clienterss.helpers.RSSFeedParser;
+import com.codigoprogramacion.clienterss.ArticlePagerActivity;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -25,10 +29,8 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 
-public class MainActivity extends Activity  {
+public class MainActivity extends Activity {
 
 
 
@@ -44,10 +46,6 @@ public class MainActivity extends Activity  {
                     .add(R.id.container, new PlaceholderFragment())
                     .commit();
         }
-
-
-
-
 
         //Ejecución de codigo
 
@@ -77,13 +75,22 @@ public class MainActivity extends Activity  {
     }
 
 
+    public void openPager()
+    {
+        Intent i = new Intent(this,ArticlePagerActivity.class);
+        //Intent i = new Intent(this,PagerTest.class);
+        startActivity(i);
+    }
+
 
     /**
      * A placeholder fragment containing a simple view.
      */
-    public static class PlaceholderFragment extends Fragment implements View.OnClickListener{
+    public class PlaceholderFragment extends Fragment implements View.OnClickListener
+    {
 
         WebView mywebview;
+        View root;
         public PlaceholderFragment() {
         }
 
@@ -91,7 +98,7 @@ public class MainActivity extends Activity  {
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-
+            root = rootView;
             mywebview = (WebView)rootView.findViewById(R.id.myWebview);
             Log.d("CLIENTE RSS", "INICIANDO APP");
 
@@ -104,6 +111,8 @@ public class MainActivity extends Activity  {
 
         @Override
         public void onClick(View view) {
+
+            openPager();
             DownloadRSSTask d = new DownloadRSSTask();
             d.execute();
         }
@@ -143,9 +152,9 @@ public class MainActivity extends Activity  {
                     in.close();
                     Log.d("CLIENTE RSS",total);
 
-                    mywebview.loadData(total, "text/html", "UTF-8");
+                    /*mywebview.loadData(total, "text/html", "UTF-8");
                     RSSFeedParser p = new RSSFeedParser("/storage/sdcard0/rss.xml");
-                    p.readFeed();
+                    p.readFeed();*/
 
 
 

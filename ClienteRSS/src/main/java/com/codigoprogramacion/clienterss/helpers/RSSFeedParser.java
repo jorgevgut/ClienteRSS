@@ -15,6 +15,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.LinkedList;
 
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
@@ -46,8 +47,8 @@ public class RSSFeedParser {
 
     }
 
-    public Feed readFeed() {
-        Feed feed = null;
+    public LinkedList<FeedMessage> readFeed() {
+        LinkedList<FeedMessage> feeds = new LinkedList();
         try {
             boolean isFeedHeader = true;
             // Set header values intial to the empty string
@@ -70,25 +71,12 @@ public class RSSFeedParser {
             parser.nextTag();
             parser.require(XmlPullParser.START_TAG, null, "rss");
 
-            /*Log.d("CLIENTE RSS","leyendo un tag :"+parser.getName());
-            if(parser.getName().equals("rss"))
-            {
-                parser.nextTag();
-                parser.require(XmlPullParser.START_TAG,null,"channel");
-                Log.d("CLIENTE RSS","leyendo un tag :"+parser.getName());
-                parser.nextTag();
-                parser.require(XmlPullParser.START_TAG,null,"title");
-                parser.next();
-                Log.d("CLIENTE RSS","TITULO:"+parser.getText());
-
-                parser.require(XmlPullParser.START_TAG,null,"item");
-                //parser.nextTag();
-            }*/
-
             //read the feed
 
             int act;
             String tag="";
+            FeedMessage temp = new FeedMessage();
+            boolean enterItems=false;
             while((act=parser.next()) != XmlPullParser.END_DOCUMENT)
             {
 
@@ -96,46 +84,41 @@ public class RSSFeedParser {
                 {
                     case XmlPullParser.START_TAG:
                         tag = parser.getName();
+                        Log.d("CLIENTE RSS",tag);
+                        if(tag.equals("item"))
+                        {enterItems=true;}
                         break;
 
                     case XmlPullParser.TEXT:
                         if(tag.equals("title"))
-                        {Log.d("CLIENTE RSS",parser.getText());
-                        tag="";}
+                        {
+                            temp.setTitle(parser.getText());
+
+                        }
+                        if(tag.equals("pubDate"))
+                        {
+                            temp.setGuid(parser.getText());
+                        }
+                        if(tag.equals("link"))
+                        {
+                            temp.setLink(parser.getText());
+                        }
+                        if(tag.equals("description"))
+                        {
+                            temp.setDescription(parser.getText());
+                        }
+
+                        tag="";
+                        break;
+
+                    case XmlPullParser.END_TAG:
+                        if(parser.getName().equals("item"))
+                        {
+                            feeds.push(temp);
+                        }
                         break;
                 }
 
-
-
-                /*
-                String name = parser.getName();
-                Log.d("CLIENTE RSS","leyendo un tag :"+name);
-                    if(name.equals(ITEM))
-                        if (isFeedHeader) {
-                            isFeedHeader = false;
-                            feed = new Feed(title, link, description, language,
-                                    copyright, pubdate);
-                        }
-
-                if(name.equals(TITLE))
-                        title = parser.getAttributeValue(null,name);
-
-                if(name.equals(DESCRIPTION))
-                        description = parser.getAttributeValue(null,name);
-                if(name.equals(LINK))
-                        link = parser.getAttributeValue(null,name);
-                if(name.equals( GUID))
-                        guid = parser.getAttributeValue(null,name);
-                if(name.equals(LANGUAGE))
-                        language = parser.getAttributeValue(null,name);
-                if(name.equals(AUTHOR))
-                        author = parser.getAttributeValue(null,name);
-                if(name.equals(PUB_DATE))
-                        pubdate = parser.getAttributeValue(null,name);
-                if(name.equals(COPYRIGHT))
-                        copyright = parser.getAttributeValue(null,name);
-
-                */
             }
 
             in.close();
@@ -147,7 +130,7 @@ public class RSSFeedParser {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        return feed;
+        return feeds;
     }
 
 

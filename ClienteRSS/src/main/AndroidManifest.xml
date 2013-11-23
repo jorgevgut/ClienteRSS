@@ -6,7 +6,7 @@
 
     <uses-sdk
         android:minSdkVersion="14"
-        android:targetSdkVersion="17" />
+        android:targetSdkVersion="19" />
     <uses-permission android:name="android.permission.INTERNET"></uses-permission>
     <uses-permission android:name="android.permission.WRITE_SETTINGS"></uses-permission>
 
@@ -29,11 +29,12 @@
             </intent-filter>
         </activity>
 
-        <activity android:name="com.codigoprogramacion.clienterss.ArticlePagerActivity"
-            android:label="Cliente RSS"
+        <activity
+        android:name=".ArticlePagerActivity"
             >
 
         </activity>
+
 
     </application>
 
