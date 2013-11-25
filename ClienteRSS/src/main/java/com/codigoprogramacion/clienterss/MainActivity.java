@@ -112,9 +112,12 @@ public class MainActivity extends Activity {
         @Override
         public void onClick(View view) {
 
-            openPager();
-            DownloadRSSTask d = new DownloadRSSTask();
-            d.execute();
+            Intent i = new Intent(getActivity(),ArticlePagerActivity.class);
+            //Intent i = new Intent(this,PagerTest.class);
+            startActivity(i);
+            //openPager();
+            //DownloadRSSTask d = new DownloadRSSTask();
+            //d.execute();
         }
 
 

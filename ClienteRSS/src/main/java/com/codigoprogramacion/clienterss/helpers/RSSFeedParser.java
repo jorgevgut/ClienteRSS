@@ -103,7 +103,7 @@ public class RSSFeedParser {
                         {
                             temp.setLink(parser.getText());
                         }
-                        if(tag.equals("description"))
+                        if(tag.equals("content:encoded"))
                         {
                             temp.setDescription(parser.getText());
                         }

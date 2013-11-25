@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,8 +19,9 @@ import android.widget.TextView;
 public class ArticleFragment extends Fragment {
 
     TextView title,date,link;
-    WebView wv;
-    String tLink="",tTitle="";
+    WebView wview;
+
+    String tLink="",tTitle="",tDate="",tContent="";
     public ArticleFragment()
     {
     }
@@ -32,11 +34,16 @@ public class ArticleFragment extends Fragment {
         title =
         ((TextView)rootView.findViewById(R.id.articleTitle));
         title.setText(tTitle);
+
         date = ((TextView)rootView.findViewById(R.id.articleDate));
-        //date.setText("123123");
+        date.setText(tDate);
+
         link = ((TextView)rootView.findViewById(R.id.articleLink));
         link.setText(tLink);
-        wv = (WebView)rootView.findViewById(R.id.artContent);
+
+        wview = (WebView)rootView.findViewById(R.id.articleContent);
+        wview.loadData(tContent, "text/html", "UTF-8");
+
         return rootView;
     }
 
@@ -45,9 +52,9 @@ public class ArticleFragment extends Fragment {
         tTitle=txt;
     }
 
-    public void setDate(String txt)
+    public void setFecha(String txt)
     {
-       date.setText(txt);
+        tDate =txt;
     }
 
     public void setLink(String txt)
@@ -57,6 +64,6 @@ public class ArticleFragment extends Fragment {
 
     public void setContent(String txt)
     {
-        wv.loadData(txt,null,"utf-8");
+        tContent = txt;
     }
 }

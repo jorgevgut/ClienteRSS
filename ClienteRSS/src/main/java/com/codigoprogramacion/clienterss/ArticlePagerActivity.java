@@ -54,6 +54,7 @@ public class ArticlePagerActivity extends FragmentActivity implements ViewPager.
         // Instantiate a ViewPager and a PagerAdapter.
         mPager = (ViewPager) findViewById(R.id.pager);
         mPager.setOnPageChangeListener(this);
+        //mPager.setOffscreenPageLimit(2);
         mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
         mPager.setAdapter(mPagerAdapter);
 
@@ -107,10 +108,10 @@ public class ArticlePagerActivity extends FragmentActivity implements ViewPager.
             ArticleFragment article = new ArticleFragment();
 
             Log.d("CLIENTE RSS",fm.getLink());
-            article.setLink(Double.toString(Math.random()*20)+" "+fm.getLink());
+            article.setLink(fm.getLink());
             article.setTitle(fm.getTitle());
-//            article.setContent(fm.getDescription());
-//            article.setDate(fm.getGuid());
+            article.setContent(fm.getDescription());
+            article.setFecha(fm.getGuid());
 
             return article;
         }
