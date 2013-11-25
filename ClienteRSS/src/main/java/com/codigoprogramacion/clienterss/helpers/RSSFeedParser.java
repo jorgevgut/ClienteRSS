@@ -114,7 +114,8 @@ public class RSSFeedParser {
                     case XmlPullParser.END_TAG:
                         if(parser.getName().equals("item"))
                         {
-                            feeds.push(temp);
+                            feeds.add(temp);
+                            temp = new FeedMessage();
                         }
                         break;
                 }
